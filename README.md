@@ -24,19 +24,31 @@ lets_encrypt-isrg_root_x1-ecc-512.sni-wb.bracewel.net
 ## Directory
 
 `HTTP` requests to `http://directory.sni-wb.bracewel.net` will return a JSON object
-describing all currently served certificate subdomains
+describing all currently served certificate subdomains. Various basic query parameters
+can be passed in order to filter the returned results.
 
 ### Format
+
+The directory takes the format of the a list of objects containing the certificate URI,
+description URI, CA name, issuer name, key type, and key size. 
 
 ```
 [
   {
     "certificateURI": "https://lets_encrypt-isrg_root_x1-rsa-2048.sni-wb.bracewel.net",
-    "certificateDescription": "http://lets_encrypt-isrg_root_x1-rsa-2048.sni-wb.bracewel.net/json"
+    "descriptionURI": "http://lets_encrypt-isrg_root_x1-rsa-2048.sni-wb.bracewel.net/json",
+    "ca": "Let's Encrypt",
+    "issuer": "ISRG Root X1",
+    "keyType": "RSA",
+    "keySize": 2048
   },
   {
     "certificateURI": "https://lets_encrypt-isrg_root_x1-rsa-2048-short_chain.sni-wb.bracewel.net",
-    "certificateDescription": "http://lets_encrypt-isrg_root_x1-rsa-2048-short_chain.sni-wb.bracewel.net/json"
+    "descriptionURI": "http://lets_encrypt-isrg_root_x1-rsa-2048-short_chain.sni-wb.bracewel.net/json"
+    "ca": "Let's Encrypt",
+    "issuer": "ISRG Root X1",
+    "keyType": "RSA",
+    "keySize": 2048
   }
 ]
 ```

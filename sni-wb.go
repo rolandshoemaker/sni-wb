@@ -38,19 +38,42 @@ var testKey = rsa.PrivateKey{
 	Primes:    []*big.Int{p, q},
 }
 
-type entry struct {
-	CertFilename string
-	KeyFilename  string
-	Problems     []string
+type shortDescription struct {
+	CertificateURI string
+	DescriptionURI string
+	CA             string
+	Issuer         string
+	KeyType        string
+	KeySize        int
+}
+
+type longDescription struct {
+	shortDescription
+
+	CertificateHash string
+	PublicKeyHash   string
+	NotBefore       time.Time
+	NotAfter        time.Time
+	Subject         pkix.Name
+	IssuerSubject   pkix.Name
+	DNSNames        []string
+	EmailAddresses  []string
+	IPAddresses     []net.IP
+	Comment          string
 }
 
 type rawConfig struct {
-	Certs []entry
+	Certs []struct {
+		CertFilename string
+		KeyFilename  string
+		Comment      string
+	}
 }
 
 type config struct {
-	certs []tls.Certificate
-	info  map[string]map[string]interface{}
+	certs     []tls.Certificate
+	info      map[string]longDescription
+	directory []shortDescription
 }
 
 func main() {
@@ -76,11 +99,7 @@ func main() {
 	}
 	c := config{
 		certs: []tls.Certificate{cert},
-		info:  make(map[string]map[string]interface{}),
-	}
-	c.info["localhost"] = map[string]interface{}{
-		"lol": "test",
-		"a":   2,
+		info:  make(map[string]longDescription),
 	}
 	c.server()
 }
